@@ -163,7 +163,7 @@ export default function MealCard(props: { time: string; date: Date; setDate: (da
                 </CardContent>
                 <CardFooter className="flex gap-2">
                     <PendingButton
-                        className="w-full flex-1 h-[37px]"
+                        className="w-full flex-1 h-[37px] cursor-pointer"
                         onClick={requestNotification}
                         disabled={notificationEnabled}
                     >
@@ -172,8 +172,14 @@ export default function MealCard(props: { time: string; date: Date; setDate: (da
                     </PendingButton>
                     <Button
                         variant="secondary"
-                        className="w-full flex-1 h-[37px]"
-                        onClick={() => navigator.clipboard.writeText(data?.data.map((d) => d.dish).join('\n') || '')}
+                        className="w-full flex-1 h-[37px] cursor-pointer"
+                        onClick={() =>
+                            navigator.clipboard.writeText(
+                                [props.date.toLocaleDateString(), data?.data.map((d) => d.dish).join('\n')].join(
+                                    '\n',
+                                ) || '',
+                            )
+                        }
                     >
                         <CopyIcon className="mr-2 h-4 w-4" />
                         <span>복사</span>
