@@ -9,4 +9,5 @@ self.addEventListener('push', (e) => {
 
 self.addEventListener('install', (e) => {
     self.console.log('install event', e);
+    self.skipWaiting();
 });
