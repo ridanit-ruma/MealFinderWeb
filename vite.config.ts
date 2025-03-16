@@ -13,12 +13,8 @@ export default defineConfig({
         https:
             process.env.SSL == 'true'
                 ? {
-                      key: fs.readFileSync(
-                          path.resolve(__dirname, process.env.SSL_KEY!),
-                      ),
-                      cert: fs.readFileSync(
-                          path.resolve(__dirname, process.env.SSL_CERT!),
-                      ),
+                      key: fs.readFileSync(path.resolve(__dirname, process.env.SSL_KEY!)),
+                      cert: fs.readFileSync(path.resolve(__dirname, process.env.SSL_CERT!)),
                   }
                 : undefined,
     },
@@ -26,11 +22,7 @@ export default defineConfig({
         VitePWA({
             registerType: 'autoUpdate',
             injectRegister: null,
-            includeAssets: [
-                'favicon.ico',
-                'robots.txt',
-                'apple-touch-icon.png',
-            ],
+            includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
             manifest: {
                 name: '급식', // 앱 이름
                 short_name: 'meal', // 앱의 짧은 이름
@@ -45,11 +37,6 @@ export default defineConfig({
                         src: 'assets/icon-192.png', // 아이콘 이미지 경로
                         sizes: '192x192', // 아이콘 크기
                         type: 'image/png', // 아이콘 타입
-                    },
-                    {
-                        src: 'assets/icon-512.png', // 더 큰 아이콘
-                        sizes: '512x512',
-                        type: 'image/png',
                     },
                 ],
             },
