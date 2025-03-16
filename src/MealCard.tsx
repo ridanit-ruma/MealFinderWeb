@@ -1,33 +1,14 @@
 import { BellIcon, CopyIcon, XIcon } from 'lucide-react';
 import DatePicker from './components/date-picker';
 import { Button } from './components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from './components/ui/card';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from './components/ui/table';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from './components/ui/popover';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './components/ui/table';
+import { Popover, PopoverContent, PopoverTrigger } from './components/ui/popover';
 import { useEffect, useState } from 'react';
 import { fetchMeal } from './services/meal.service';
 import { Skeleton } from './components/ui/skeleton';
 import { motion } from 'motion/react';
-
-const MotionTable = motion(Table);
+import { subscribe } from './lib/notification';
 
 export interface MealData {
     date: string;
@@ -110,75 +91,68 @@ export default function MealCard(props: {
                     {error || !data ? (
                         <div className="flex flex-col items-center gap-3 mt-10 mb-10">
                             <XIcon className="h-10 w-10 text-muted-foreground" />
-                            <div className="text-center text-sm text-muted-foreground">
-                                급식 데이터가 없습니다.
-                            </div>
+                            <div className="text-center text-sm text-muted-foreground">급식 데이터가 없습니다.</div>
                         </div>
                     ) : (
-                        <MotionTable animate={{ opacity: data ? 1 : 0 }}>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="text-center">
-                                        메뉴
-                                    </TableHead>
-                                    <TableHead className="text-center">
-                                        알레르기 정보
-                                    </TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {data?.data.map((meal) => (
-                                    <TableRow key={meal.dish}>
-                                        <TableCell align="left">
-                                            {meal.dish}
-                                        </TableCell>
-                                        <TableCell>
-                                            <Popover>
-                                                <PopoverTrigger asChild>
-                                                    {meal.allergies ? (
-                                                        <Button
-                                                            variant="ghost"
-                                                            className="h-[23px] text-xs cursor-pointer text-muted-foreground"
-                                                        >
-                                                            보이기
-                                                        </Button>
-                                                    ) : (
-                                                        <Button
-                                                            disabled
-                                                            variant="ghost"
-                                                            className="h-[23px] text-xs cursor-pointer text-muted-foreground"
-                                                        >
-                                                            없음
-                                                        </Button>
-                                                    )}
-                                                </PopoverTrigger>
-                                                <PopoverContent>
-                                                    <p>{meal.allergies}</p>
-                                                </PopoverContent>
-                                            </Popover>
-                                        </TableCell>
+                        <motion.div animate={{ opacity: data ? 1 : 0 }}>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="text-center">메뉴</TableHead>
+                                        <TableHead className="text-center">알레르기 정보</TableHead>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </MotionTable>
+                                </TableHeader>
+                                <TableBody>
+                                    {data?.data.map((meal) => (
+                                        <TableRow key={meal.dish}>
+                                            <TableCell align="left">{meal.dish}</TableCell>
+                                            <TableCell>
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        {meal.allergies ? (
+                                                            <Button
+                                                                variant="ghost"
+                                                                className="h-[23px] text-xs cursor-pointer text-muted-foreground"
+                                                            >
+                                                                보이기
+                                                            </Button>
+                                                        ) : (
+                                                            <Button
+                                                                disabled
+                                                                variant="ghost"
+                                                                className="h-[23px] text-xs cursor-pointer text-muted-foreground"
+                                                            >
+                                                                없음
+                                                            </Button>
+                                                        )}
+                                                    </PopoverTrigger>
+                                                    <PopoverContent>
+                                                        <p>{meal.allergies}</p>
+                                                    </PopoverContent>
+                                                </Popover>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </motion.div>
                     )}
                 </CardContent>
                 <CardFooter className="flex gap-2">
-                    <Button
-                        className="w-full flex-1 h-[37px]"
-                        onClick={() => subscribeUser()}
-                    >
+                    <Button className="w-full flex-1 h-[37px]" onClick={() => subscribe()}>
                         <BellIcon className="mr-2 h-4 w-4" />
                         <span>알림 받기</span>
                     </Button>
                     <Button
                         variant="secondary"
                         className="w-full flex-1 h-[37px]"
-                        onClick={() =>
+                        onClick={() => {
                             navigator.clipboard.writeText(
-                                data?.data.map((d) => d.dish).join('\n') || '',
-                            )
-                        }
+                                [props.date.getDate().toString(), data?.data.map((d) => d.dish).join('\n')].join(
+                                    '\n',
+                                ) || '',
+                            );
+                        }}
                     >
                         <CopyIcon className="mr-2 h-4 w-4" />
                         <span>복사</span>
