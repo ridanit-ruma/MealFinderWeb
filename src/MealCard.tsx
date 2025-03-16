@@ -149,7 +149,13 @@ export default function MealCard(props: {
                     <Button
                         variant="secondary"
                         className="w-full flex-1 h-[37px]"
-                        onClick={() => navigator.clipboard.writeText(data?.data.map((d) => d.dish).join('\n') || '')}
+                        onClick={() => {
+                            navigator.clipboard.writeText(
+                                [props.date.getDate().toString(), data?.data.map((d) => d.dish).join('\n')].join(
+                                    '\n',
+                                ) || '',
+                            );
+                        }}
                     >
                         <CopyIcon className="mr-2 h-4 w-4" />
                         <span>복사</span>
