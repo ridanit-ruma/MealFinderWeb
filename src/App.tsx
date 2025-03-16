@@ -3,7 +3,6 @@ import './App.css';
 import { register } from './serviceWorkerRegistration';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import MealCard from './components/app/meal-card';
-import { IosHomeScreenAlert } from './components/app/ios-home-screen';
 import { getClosestDate } from './lib/date-util';
 
 function App() {
