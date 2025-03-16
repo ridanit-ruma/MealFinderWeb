@@ -3,26 +3,39 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
-import mkcert from 'vite-plugin-mkcert';
+import * as fs from 'fs';
+import 'dotenv/config';
+import svgr from 'vite-plugin-svgr';
 
 // https://vite.dev/config/
 export default defineConfig({
-    server: {},
+    server: {
+        https:
+            process.env.SSL == 'true'
+                ? {
+                      key: fs.readFileSync(
+                          path.resolve(__dirname, process.env.SSL_KEY!),
+                      ),
+                      cert: fs.readFileSync(
+                          path.resolve(__dirname, process.env.SSL_CERT!),
+                      ),
+                  }
+                : undefined,
+    },
     plugins: [
-        react(),
-        mkcert(),
-        tailwindcss(),
         VitePWA({
             registerType: 'autoUpdate',
+            injectRegister: null,
             includeAssets: [
                 'favicon.ico',
                 'robots.txt',
                 'apple-touch-icon.png',
             ],
             manifest: {
-                name: 'My Awesome App', // 앱 이름
-                short_name: 'AwesomeApp', // 앱의 짧은 이름
-                description: 'This is an awesome app for demonstrating PWA', // 앱 설명
+                name: '급식', // 앱 이름
+                short_name: 'meal', // 앱의 짧은 이름
+                id: 'com.inizeno.meal',
+                description: '급식 조회', // 앱 설명
                 theme_color: '#000000', // 앱 테마 색상 (브라우저 상단바 색상 등)
                 background_color: '#ffffff', // 앱 배경 색상
                 display: 'standalone', // 앱이 웹 앱처럼 표시될지, 또는 브라우저 탭처럼 표시될지 설정
@@ -44,6 +57,9 @@ export default defineConfig({
                 enabled: true,
             },
         }),
+        react(),
+        svgr(),
+        tailwindcss(),
     ],
     resolve: {
         alias: {
