@@ -1,7 +1,7 @@
 export function register() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker
-            .register('/sw.js', { scope: '/' })
+            .register('/worker.js', { scope: '/' })
             .then((registration) => {
                 console.log('SW registered: ', registration);
                 registration.update();
