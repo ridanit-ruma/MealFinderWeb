@@ -15,7 +15,7 @@ function App() {
     return (
         <div className="flex flex-col items-center h-full w-full">
             <p className="font-medium cookie text-4xl mb-5">급식 정보</p>
-            <Tabs className="w-full max-w-[400px]" defaultValue="breakfast">
+            <Tabs className="w-full max-w-[400px]" defaultValue="lunch">
                 <TabsList className="w-full">
                     <TabsTrigger value="breakfast">조식</TabsTrigger>
                     <TabsTrigger value="lunch">중식</TabsTrigger>
