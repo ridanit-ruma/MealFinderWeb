@@ -14,12 +14,12 @@ export async function fetchMeal(date: string) {
             calories: data.mealInfo.cal,
         };
         if (typeof meal.data != 'string') {
-            const fuck = meal.data.map((d) => {
+            const mealData = meal.data.map((d) => {
                 const [dish, dishAllergy = ''] = d.split(' (');
                 const allergies = dishAllergy.replace('(', '').replace(')', '');
                 return { dish, allergies };
             });
-            return { data: fuck };
+            return { data: mealData };
         } else {
             return null;
         }
@@ -33,7 +33,7 @@ export async function fetchMeal(date: string) {
         dinner,
     };
 
-    if (meals.breakfast != null || meals.lunch != null || meals.dinner != null) {
+    if (meals.breakfast !== null || meals.lunch !== null || meals.dinner !== null) {
         localStorage.setItem(`meal:${date}`, JSON.stringify(meals));
     }
 
