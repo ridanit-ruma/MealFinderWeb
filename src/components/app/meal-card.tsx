@@ -138,7 +138,7 @@ export default function MealCard(props: { time: string; date: Date; setDate: (da
                                                             variant="ghost"
                                                             className="h-[23px] text-xs cursor-pointer text-muted-foreground"
                                                         >
-                                                            보이기
+                                                            보기
                                                         </Button>
                                                     ) : (
                                                         <Button
